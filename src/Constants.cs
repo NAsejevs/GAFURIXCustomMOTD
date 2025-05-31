@@ -1,6 +1,7 @@
-namespace GAFURIX;
-
-public static class Constants
+namespace GAFURIX
 {
-    public const string MOD_NAME = "CustomMOTD";
+    public static class Constants
+    {
+        public const string MOD_NAME = "GAFURIXCustomMOTD";
+    }
 }

@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>GAFURIXCustomMOTD</AssemblyName>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net4.8</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,7 +25,7 @@
     <!-- Streamline development and move the built .dll to the plugins folder after building -->
   <Target Name="PostBuildMoveDll" AfterTargets="Build">
     <PropertyGroup>
-      <TargetDir>C:\Users\nilsa\Documents\Unity Projects\Puck\Builds\puck\Plugins\GAFURIXTestMod</TargetDir>
+      <TargetDir>C:\Program Files (x86)\Steam\steamapps\workshop\content\2994020\3491056040</TargetDir>
     </PropertyGroup>
 
     <MakeDir Directories="$(TargetDir)" />
