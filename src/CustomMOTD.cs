@@ -24,10 +24,12 @@ namespace GAFURIX
             }
         }
 
-        public void OnEnable()
+        public bool OnEnable()
         {
             try
             {
+                Debug.LogError($"[{Constants.MOD_NAME}] Enabling...");
+
                 string rootPath = Path.GetFullPath(".");
                 string motdPath = Path.Combine(rootPath, "motd.txt");
 
@@ -38,25 +40,31 @@ namespace GAFURIX
 
                 harmony.PatchAll();
 
-                Debug.Log($"[{Constants.MOD_NAME}] enabled");
+                Debug.Log($"[{Constants.MOD_NAME}] Enabled");
+                return true;
             }
             catch (Exception e)
             {
                 Debug.LogError($"[{Constants.MOD_NAME}] failed to enable: {e.Message}");
+                return false;
             }
         }
 
-        public void OnDisable()
+        public bool OnDisable()
         {
             try
             {
+                Debug.LogError($"[{Constants.MOD_NAME}] Disabling...");
+
                 harmony.UnpatchSelf();
 
-                Debug.Log($"[{Constants.MOD_NAME}] disabled");
+                Debug.Log($"[{Constants.MOD_NAME}] Disabled");
+                return true;
             }
             catch (Exception e)
             {
                 Debug.LogError($"[{Constants.MOD_NAME}] failed to disable: {e.Message}");
+                return false;
             }
         }
     }
