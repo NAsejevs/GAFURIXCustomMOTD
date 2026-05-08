@@ -1,25 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using HarmonyLib;
-using UnityEngine;
 
 namespace GAFURIX
 {
-    public class CustomMOTD : IPuckMod
+    public class CustomMOTD : IPuckPlugin
     {
+        static readonly Logger Logger = new Logger(Constants.MOD_NAME);
         static readonly Harmony harmony = new Harmony("GAFURIX.CustomMOTD");
         static string motd = "Welcome to the server!";
 
-        [HarmonyPatch(typeof(UIChatController), "Event_Server_OnSynchronizeComplete")]
-        public class UIChatControllerPatch
+        [HarmonyPatch(typeof(BaseGameMode<BaseGameModeConfig>), "OnPlayerJoined")]
+        public class OnPlayerJoinedPatch
         {
             [HarmonyPrefix]
-            public static bool Prefix(Dictionary<string, object> message)
+            public static bool Prefix(BaseGameMode<BaseGameModeConfig> __instance, Player player)
             {
-                ulong clientId = (ulong)message["clientId"];
+                string username = StringUtils.WrapInTeamColor(
+                    player.Username.Value.ToString(),
+                    player.Team
+                );
 
-                UIChat.Instance.Server_SendSystemChatMessage(motd, clientId);
+                __instance.ChatManager.Server_BroadcastChatMessage(
+                    $"{username} has joined the server"
+                );
+                __instance.ChatManager.Server_SendChatMessageToClients(
+                    motd,
+                    new ulong[] { player.OwnerClientId }
+                );
                 return false;
             }
         }
@@ -28,8 +36,6 @@ namespace GAFURIX
         {
             try
             {
-                Debug.LogError($"[{Constants.MOD_NAME}] Enabling...");
-
                 string rootPath = Path.GetFullPath(".");
                 string motdPath = Path.Combine(rootPath, "motd.txt");
 
@@ -39,13 +45,11 @@ namespace GAFURIX
                     motd = File.ReadAllText(motdPath);
 
                 harmony.PatchAll();
-
-                Debug.Log($"[{Constants.MOD_NAME}] Enabled");
                 return true;
             }
             catch (Exception e)
             {
-                Debug.LogError($"[{Constants.MOD_NAME}] failed to enable: {e.Message}");
+                Logger.Error($"Failed to enable: {e.Message}");
                 return false;
             }
         }
@@ -54,16 +58,12 @@ namespace GAFURIX
         {
             try
             {
-                Debug.LogError($"[{Constants.MOD_NAME}] Disabling...");
-
                 harmony.UnpatchSelf();
-
-                Debug.Log($"[{Constants.MOD_NAME}] Disabled");
                 return true;
             }
             catch (Exception e)
             {
-                Debug.LogError($"[{Constants.MOD_NAME}] failed to disable: {e.Message}");
+                Logger.Error($"Failed to disable: {e.Message}");
                 return false;
             }
         }

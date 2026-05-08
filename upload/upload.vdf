@@ -1,0 +1,11 @@
+"workshopitem"
+{
+	"appid"		"2994020"
+	"publishedfileid"		"3721801263"
+	"contentfolder"		"/home/nasejevs/GAFURIXCustomMOTD/upload/content"
+	"previewfile"		"/home/nasejevs/GAFURIXCustomMOTD/upload/preview.png"
+	"visibility"		"0"
+	"title"		"GAFURIX' Custom MOTD"
+	"description"		"Send a custom welcome message to all clients joining your server."
+	"changenote"		"v1.2"
+}
